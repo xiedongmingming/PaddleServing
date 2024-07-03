@@ -1,60 +1,62 @@
-# 使用Docker安装Paddle Serving
+# 使用DOCKER安装PADDLESERVING
 
-(简体中文|[English](./Install_EN.md))
+(简体中文|[ENGLISH](./Install_EN.md))
 
-- [1.使用开发镜像](#1)
-    - [Serving 开发镜像](#1.1)
-        - [CPU 镜像](#1.1.1)
-        - [GPU 镜像](#1.1.2)
-        - [ARM & XPU 镜像](#1.1.3)
-    - [Paddle 开发镜像](#1.2)
-        - [CPU 镜像](#1.2.1)
-        - [GPU 镜像](#1.2.2)
-- [2.安装 Wheel 包](#2)
+- [1. 使用开发镜像](#1)
+    - [SERVING开发镜像](#1.1)
+        - [CPU镜像](#1.1.1)
+        - [GPU镜像](#1.1.2)
+        - [ARM&XPU镜像](#1.1.3)
+    - [PADDLE开发镜像](#1.2)
+        - [CPU镜像](#1.2.1)
+        - [GPU镜像](#1.2.2)
+- [2. 安装WHEEL包](#2)
     - [在线安装](#2.1)
     - [离线安装](#2.2)
-    - [ARM & XPU 包安装](#2.3)
-- [3.环境检查](#3)
+    - [ARM&XPU 包安装](#2.3)
+- [3. 环境检查](#3)
 
+**强烈建议**您在**DOCKER内构建**PADDLE SERVING，更多镜像请查看[DOCKER镜像列表](Docker_Images_CN.md)。
 
-**强烈建议**您在**Docker内构建**Paddle Serving，更多镜像请查看[Docker镜像列表](Docker_Images_CN.md)。
+**提示-1**：本项目仅支持<mark>**PYTHON3.6/3.7/3.8/3.9**</mark>，接下来所有的与PYTHON/PIP相关的操作都需要选择正确的PYTHON版本。
 
-**提示-1**：本项目仅支持<mark>**Python3.6/3.7/3.8/3.9**</mark>，接下来所有的与Python/Pip相关的操作都需要选择正确的Python版本。
-
-**提示-2**：以下示例中GPU环境均为cuda11.2-cudnn8，如果您使用Python Pipeline来部署，并需要Nvidia TensorRT来优化预测性能，请参考以下说明来选择其他版本。
+**提示-2**：以下示例中GPU环境均为CUDA11.2-CUDNN8，如果您使用PYTHON PIPELINE来部署，并需要NVIDIA TENSORRT来优化预测性能，请参考以下说明来选择其他版本。
 
 <a name="1"></a>
 
-## 1.使用开发镜像
+## 1. 使用开发镜像
 
-- Serving 镜像: registry.baidubce.com/paddlepaddle/serving:{Tag}
-- Paddle 镜像: registry.baidubce.com/paddlepaddle/paddle:{Tag}
+- SERVING镜像: registry.baidubce.com/paddlepaddle/serving:{Tag}
+- PADDLE镜像: registry.baidubce.com/paddlepaddle/paddle:{Tag}
 
-<mark>**同时支持使用 Serving 镜像和 Paddle 镜像，`1.1` 和 `1.2` 章节中的操作2选1即可。**</mark> 在Paddle docker镜像上部署 Servin g服务需要安装额外依赖库，因此，我们直接使用 Serving 开发镜像。
+<mark>**同时支持使用SERVING镜像和PADDLE镜像，`1.1`和`1.2`章节中的操作2选1即可。**</mark>在PADDLE DOCKER镜像上部署SERVING服务需要安装额外依赖库，因此，我们直接使用SERVING开发镜像。
 
-|  环境                         |   Serving镜像 Tag               |    操作系统      | Paddle镜像 Tag       |  操作系统            |
+|  环境                         |   SERVING镜像TAG       |    操作系统      | PADDLE镜像TAG |  操作系统            |
 | :--------------------------: | :-------------------------------: | :-------------: | :-------------------: | :----------------: |
 |  CPU                         | 0.9.0-devel                       |  Ubuntu 16    | 2.3.0                | Ubuntu 18       |
 |  CUDA10.1 + cuDNN 7           | 0.9.0-cuda10.1-cudnn7-devel       |  Ubuntu 16   | 无                    | 无                 |
-|  CUDA10.2 + cuDNN 7           | 0.9.0-cuda10.2-cudnn7-devel       |  Ubuntu 16   | 2.3.0-gpu-cuda10.2-cudnn7 | Ubuntu 18
+|  CUDA10.2 + cuDNN 7           | 0.9.0-cuda10.2-cudnn7-devel       |  Ubuntu 16   | 2.3.0-gpu-cuda10.2-cudnn7 | Ubuntu 18|
 |  CUDA10.2 + cuDNN 8           | 0.9.0-cuda10.2-cudnn8-devel       |  Ubuntu 16   | 无                   | Ubuntu 18 |
-|  CUDA11.2 + cuDNN 8           | 0.9.0-cuda11.2-cudnn8-devel       |  Ubuntu 16   | 2.3.0-gpu-cuda11.2-cudnn8 | Ubuntu 18   | 
+|  CUDA11.2 + cuDNN 8           | 0.9.0-cuda11.2-cudnn8-devel       |  Ubuntu 16   | 2.3.0-gpu-cuda11.2-cudnn8 | Ubuntu 18   |
 |  ARM + XPU                    | xpu-arm                           |  CentOS 8.3  | 无                         | 无           |
 
-对于**Windows 10 用户**，请参考文档[Windows平台使用Paddle Serving指导](Windows_Tutorial_CN.md)。
+对于**WINDOWS10 用户**，请参考文档[WINDOWS平台使用PADDLESERVING指导](Windows_Tutorial_CN.md)。
 
 <a name="1.1"></a>
 
-### 1.1 Serving开发镜像（CPU/GPU 2选1）
+### 1.1 SERVING开发镜像（CPU/GPU2选1）
 
 <a name="1.1.1"></a>
 
 **CPU：**
+
 ```
-# 启动 CPU Docker
+# 启动CPU DOCKER
 docker pull registry.baidubce.com/paddlepaddle/serving:0.9.0-devel
+
 docker run -p 9292:9292 --name test_cpu -dit registry.baidubce.com/paddlepaddle/serving:0.9.0-devel bash
 docker exec -it test_cpu bash
+
 git clone https://github.com/PaddlePaddle/Serving
 ```
 
@@ -62,16 +64,19 @@ git clone https://github.com/PaddlePaddle/Serving
 
 **GPU：**
 ```
-# 启动 GPU Docker
+# 启动GPU DOCKER
 docker pull registry.baidubce.com/paddlepaddle/serving:0.9.0-cuda11.2-cudnn8-devel
+
 nvidia-docker run -p 9292:9292 --name test_gpu -dit registry.baidubce.com/paddlepaddle/serving:0.9.0-cuda11.2-cudnn8-devel bash
 nvidia-docker exec -it test_gpu bash
+
 git clone https://github.com/PaddlePaddle/Serving
 ```
 
 <a name="1.1.3"></a>
 
-**ARM & XPU: **
+**ARM&XPU: **
+
 ```
 docker pull registry.baidubce.com/paddlepaddle/serving:xpu-arm
 docker run -p 9292:9292 --name test_arm_xpu -dit registry.baidubce.com/paddlepaddle/serving:xpu-arm bash
@@ -81,19 +86,22 @@ git clone https://github.com/PaddlePaddle/Serving
 
 <a name="1.2"></a>
 
-### 1.2 Paddle开发镜像（CPU/GPU 2选1）
+### 1.2 PADDLE开发镜像（CPU/GPU 2选1）
 
 <a name="1.2.1"></a>
 
 **CPU：**
 ```
-### 启动 CPU Docker
+### 启动 CPU DOCKER
+
 nvidia-docker pull registry.baidubce.com/paddlepaddle/paddle:2.3.0
+
 docker run -p 9292:9292 --name test -dit registry.baidubce.com/paddlepaddle/paddle:2.3.0 bash
 docker exec -it test bash
+
 git clone https://github.com/PaddlePaddle/Serving
 
-### Paddle开发镜像需要执行以下脚本增加Serving所需依赖项
+### PADDLE开发镜像需要执行以下脚本增加SERVING所需依赖项
 bash Serving/tools/paddle_env_install.sh
 ```
 
@@ -101,28 +109,28 @@ bash Serving/tools/paddle_env_install.sh
 
 **GPU：**
 ```
-### 启动 GPU Docker
+### 启动 GPU DOCKER
 
 nvidia-docker pull registry.baidubce.com/paddlepaddle/paddle:2.3.0-gpu-cuda11.2-cudnn8
 nvidia-docker run -p 9292:9292 --name test -dit registry.baidubce.com/paddlepaddle/paddle:2.3.0-gpu-cuda11.2-cudnn8 bash
 nvidia-docker exec -it test bash
 git clone https://github.com/PaddlePaddle/Serving
 
-### Paddle开发镜像需要执行以下脚本增加Serving所需依赖项
+### PADDLE开发镜像需要执行以下脚本增加SERVING所需依赖项
 bash Serving/tools/paddle_env_install.sh
 ```
 
 <a name="2"></a>
 
-## 2.安装 Wheel 包
+## 2. 安装WHEEL包
 
-安装所需的pip依赖
+安装所需的PIP依赖
 ```
 cd Serving
 pip3 install -r python/requirements.txt
 ```
 
-安装服务whl包，共有3种client、app、server，Server分为CPU和GPU，GPU包根据您的环境选择一种安装
+安装服务WHL包，共有3种CLIENT、APP、SERVER，SERVER分为CPU和GPU，GPU包根据您的环境选择一种安装
 - post112 = CUDA11.2 + cuDNN8 + TensorRT8（推荐）
 - post101 = CUDA10.1 + cuDNN7 + TensorRT6
 - post102 = CUDA10.2 + cuDNN7 + TensorRT6 (与Paddle 镜像一致)
@@ -137,10 +145,10 @@ pip3 install -r python/requirements.txt
 pip3 install paddle-serving-client==0.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip3 install paddle-serving-app==0.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# CPU Server
+# CPU SERVER
 pip3 install paddle-serving-server==0.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# GPU Server，需要确认环境再选择执行哪一条，推荐使用CUDA 11.2的包
+# GPU SERVER，需要确认环境再选择执行哪一条，推荐使用CUDA 11.2的包
 pip3 install paddle-serving-server-gpu==0.9.0.post112 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
@@ -255,9 +263,9 @@ python3 install.py --cuda_version="112" --python_version="py36" --device="GPU" -
 
 <a name="2.3"></a>
 
-### 2.3 ARM & XPU 安装 wheel 包
+### 2.3 ARM&XPU安装WHEEL包
 
-由于使用 ARM 和 XPU 的用户较少，安装此环境的 Wheel 单独提供如下，其中 `paddle_serving_client` 仅提供 `py36` 的版本，如需其他版本请与我们联系。
+由于使用ARM和XPU的用户较少，安装此环境的WHEEL单独提供如下，其中`PADDLE_SERVING_CLIENT`仅提供`PY36`的版本，如需其他版本请与我们联系。
 
 ```
 pip3.6 install https://paddle-serving.bj.bcebos.com/test-dev/whl/arm/paddle_serving_app-0.9.0-py3-none-any.whl
@@ -265,7 +273,7 @@ pip3.6 install https://paddle-serving.bj.bcebos.com/test-dev/whl/arm/paddle_serv
 pip3.6 install https://paddle-serving.bj.bcebos.com/test-dev/whl/arm/paddle_serving_server_xpu-0.9.0.post2-py3-none-any.whl
 ```
 
-二进制包地址:
+二进制包地址：
 ```
 wget https://paddle-serving.bj.bcebos.com/test-dev/bin/serving-xpu-aarch64-0.9.0.tar.gz
 ```
@@ -273,8 +281,8 @@ wget https://paddle-serving.bj.bcebos.com/test-dev/bin/serving-xpu-aarch64-0.9.0
 
 <a name="3"></a>
 
-## 3.环境检查
-当以上步骤均完成后可使用命令行运行环境检查功能，自动运行Paddle Serving相关示例，进行环境相关配置校验。
+## 3. 环境检查
+当以上步骤均完成后可使用命令行运行环境检查功能，自动运行PADDLESERVING相关示例，进行环境相关配置校验。
 ```
 python3 -m paddle_serving_server.serve check
 ```

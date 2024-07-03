@@ -92,26 +92,41 @@ def dump_pid_file(portList, model):
        dump_pid_file([9494, 10082], 'serve')
     '''
     pid = os.getpid()
+
     if platform.system() == "Windows":
         gid = pid
     else:
-        gid = os.getpgid(pid)      
+        gid = os.getpgid(pid)
+
     pidInfoList = []
+
     filepath = os.path.join(CONF_HOME, "ProcessInfo.json")
+
     if os.path.exists(filepath):
+
         if os.path.getsize(filepath):
+
             with open(filepath, "r") as fp:
+
                 pidInfoList = json.load(fp)
+
                 # delete old pid data when new port number is same as old's
                 for info in pidInfoList:
+
                     storedPort = list(info["port"])
+
                     interList = list(set(portList)&set(storedPort))
+
                     if interList:
+
                         pidInfoList.remove(info)
 
     with open(filepath, "w") as fp:
+
         info ={"pid": gid, "port" : portList, "model" : str(model), "start_time" : time.time()}
+
         pidInfoList.append(info)
+
         json.dump(pidInfoList, fp)
 
 def load_pid_file(filepath: str):

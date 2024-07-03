@@ -288,7 +288,9 @@ public class PaddleServingClientExample {
             return;
         }
         String testType = args[0];
+
         System.out.format("[Example] %s\n", testType);
+
         if ("http_proto".equals(testType)) {
             succ = e.http_proto(args[1]);
         } else if ("http_json".equals(testType)) {

@@ -4,19 +4,19 @@
 
 ### 综述
 
-本文档指导用户如何在WINDOWS平台手把手搭建PADDLESERVING服务。由于受限第三方库的支持，WINDOWS平台目前只支持用WEBSERVICE的方式搭建LOCAL PREDICTOR预测服务。如果想要体验全部的服务，需要使用DOCKER FOR WINDOWS，来模拟LINUX的运行环境。
+本文档指导用户如何在WINDOWS平台手把手搭建PADDLESERVING服务。由于**受限第三方库**的支持，WINDOWS平台目前只支持用**WEBSERVICE**的方式搭建LOCALPREDICTOR预测服务。如果想要体验全部的服务，需要使用DOCKER FOR WINDOWS，来模拟LINUX的运行环境。
 
 ### 原生WINDOWS系统运行PADDLESERVING
 
-**配置PYTHON环境变量到PATH**：**目前原生WINDOWS仅支持PYTHON3.6或更高版本**。首先需要将PYTHON的可执行程序所在目录加入到PATH当中。通常在**系统属性/我的电脑属性**-**高级**-**环境变量** ，点选PATH，并在开头加上路径。例如`C:\Users\$USER\AppData\Local\Programs\Python\Python36`，最后连续点击**确定** 。在POWEERSHELL上如果输入PYTHON可以进入PYTHON交互界面，说明环境变量配置成功。
+**配置PYTHON环境变量到PATH**：**目前原生WINDOWS仅支持PYTHON3.6或更高版本**。首先需要将PYTHON的可执行程序所在目录加入到PATH当中。通常在**系统属性/我的电脑属性**-**高级**-**环境变量** ，点选PATH，并在开头加上路径。最后连续点击**确定** 。在POWEERSHELL上如果输入PYTHON可以进入PYTHON交互界面，说明环境变量配置成功。
 
-**安装WGET工具**：由于教程当中所有的下载，以及`PADDLE_SERVING_APP`当中内嵌的模型下载功能，都是用到WGET工具，在链接[下载WGET](http://gnuwin32.sourceforge.net/packages/wget.htm)，解压后复制到`C:\Windows\System32`下，如有安全提示需要通过。
+**安装WGET工具**：由于教程当中所有的下载，以及`PADDLE_SERVING_APP`当中内嵌的模型下载功能，都是用到WGET工具，在链接[下载WGET](http://gnuwin32.sourceforge.net/packages/wget.htm)，解压后复制到`C:\WINDOWS\SYSTEM32`下，如有安全提示需要通过。
 
-**安装Git工具**： 详情参见[Git官网](https://git-scm.com/downloads)
+**安装GIT工具**：详情参见[GIT官网](https://git-scm.com/downloads)
 
-**安装必要的C++库（可选）**：部分用户可能会在`import paddle`阶段遇见dll无法链接的问题，建议[安装Visual Studio社区版本](https://visualstudio.microsoft.com/) ，并且安装C++的相关组件。
+**安装必要的C++库（可选）**：部分用户可能会在`IMPORT PADDLE`阶段遇见DLL无法链接的问题，建议[安装VISUAL STUDIO社区版本](https://visualstudio.microsoft.com/)，并且安装C++的相关组件。
 
-**安装PADDLE和SERVING**：在POWERSHELL，执行
+**安装PADDLE和SERVING**：在POWERSHELL执行
 
 ```
 python -m pip install -U paddle_serving_server paddle_serving_client paddle_serving_app paddlepaddle`
@@ -32,6 +32,7 @@ python -m pip install -U paddle_serving_server_gpu paddle_serving_client paddle_
 
 ```
 git clone https://github.com/paddlepaddle/Serving
+
 pip install -r python/requirements_win.txt
 ```
 
@@ -39,20 +40,26 @@ pip install -r python/requirements_win.txt
 
 ```
 cd Serving/examples/C++/PaddleOCR/ocr/
+
+# 地址：https://paddle-serving.bj.bcebos.com/ocr_v2/ocr_rec.tar.gz
 python -m paddle_serving_app.package --get_model ocr_rec
 tar -xzvf ocr_rec.tar.gz
-python -m paddle_serving_app.package --get_model ocr_det
+
+# 地址：https://paddle-serving.bj.bcebos.com/ocr_v2/ocr_det.tar.gz
+python -m paddle_serving_app.package --get_model ocr_det   
 tar -xzvf ocr_det.tar.gz
-python ocr_debugger_server.py cpu &
+
+python ocr_debugger_server.py cpu &		???必须安装PADDLE_SERVING_SERVER（非GPU版）目前只能使用CPU（GPU会报错）
+
 python ocr_web_client.py
 ```
 
 ### 创建新的WINDOWS支持的PADDLESERVING服务
 
-目前WINDOWS支持WEBSERVICE框架的LOCAL PREDICTOR。服务端代码框架如下
+目前WINDOWS支持WEBSERVICE框架的LOCALPREDICTOR。服务端代码框架如下
 
 ```
-# filename:your_webservice.py
+# filename: your_webservice.py
 
 from paddle_serving_server.web_service import WebService
 
@@ -70,12 +77,16 @@ class YourWebService(WebService):
         #在这里做处理之后，结果需重新转换成字典，并且values的类型应是列表list，这样可以JSON序列化方便web返回
         return response
 
-your_service = YourService(name="XXX")
+your_service = YourWebService(name="XXX")
+
 your_service.load_model_config("your_model_path")
 your_service.prepare_server(workdir="workdir", port=9292)
-# 如果是GPU用户，可以参照Serving/examples/Pipeline/PaddleOCR/ocr下的python示例
+
+# 如果是GPU用户，可以参照SERVING/EXAMPLES/PIPELINE/PADDLEOCR/OCR下的PYTHON示例
+
 your_service.run_debugger_service()
-# Windows平台不可以使用 run_rpc_service()接口
+
+# WINDOWS平台不可以使用RUN_RPC_SERVICE()接口
 your_service.run_web_service()
 ```
 
@@ -100,7 +111,7 @@ def cv2_to_base64(image):
 
 headers = {"Content-type": "application/json"}
 
-url = "http://127.0.0.1:9292/XXX/prediction" # XXX取决于服务端YourService的初始化name参数
+url = "http://127.0.0.1:9292/XXX/prediction" # XXX取决于服务端YOURSERVICE的初始化NAME参数
 
 r = requests.post(url=url, headers=headers, data=json.dumps(data))
 
@@ -130,7 +141,7 @@ python your_client.py
 docker pull registry.baidubce.com/paddlepaddle/serving:latest-devel
 
 # 此处没有EXPOSE端口，用户可根据需要设置-P来进行端口映射
-docker run --rm -dit --name serving_devel -v $PWD:/Serving registry.baidubce.com/paddlepaddle/serving:latest-devel
+docker run --rm -dit --name serving_devel -v $PWD:/Serving  registry.baidubce.com/paddlepaddle/serving:latest-devel
 
 docker exec -it serving_devel bash
 

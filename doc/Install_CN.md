@@ -40,7 +40,7 @@
 |  CUDA11.2 + cuDNN 8           | 0.9.0-cuda11.2-cudnn8-devel       |  Ubuntu 16   | 2.3.0-gpu-cuda11.2-cudnn8 | Ubuntu 18   |
 |  ARM + XPU                    | xpu-arm                           |  CentOS 8.3  | 无                         | 无           |
 
-对于**WINDOWS10 用户**，请参考文档[WINDOWS平台使用PADDLESERVING指导](Windows_Tutorial_CN.md)。
+对于**WINDOWS10用户**，请参考文档[WINDOWS平台使用PADDLESERVING指导](Windows_Tutorial_CN.md)。
 
 <a name="1.1"></a>
 
@@ -79,8 +79,11 @@ git clone https://github.com/PaddlePaddle/Serving
 
 ```
 docker pull registry.baidubce.com/paddlepaddle/serving:xpu-arm
+
 docker run -p 9292:9292 --name test_arm_xpu -dit registry.baidubce.com/paddlepaddle/serving:xpu-arm bash
+
 docker exec -it test_arm_xpu bash
+
 git clone https://github.com/PaddlePaddle/Serving
 ```
 
@@ -112,8 +115,11 @@ bash Serving/tools/paddle_env_install.sh
 ### 启动 GPU DOCKER
 
 nvidia-docker pull registry.baidubce.com/paddlepaddle/paddle:2.3.0-gpu-cuda11.2-cudnn8
+
 nvidia-docker run -p 9292:9292 --name test -dit registry.baidubce.com/paddlepaddle/paddle:2.3.0-gpu-cuda11.2-cudnn8 bash
+
 nvidia-docker exec -it test bash
+
 git clone https://github.com/PaddlePaddle/Serving
 
 ### PADDLE开发镜像需要执行以下脚本增加SERVING所需依赖项
@@ -127,10 +133,11 @@ bash Serving/tools/paddle_env_install.sh
 安装所需的PIP依赖
 ```
 cd Serving
+
 pip3 install -r python/requirements.txt
 ```
 
-安装服务WHL包，共有3种CLIENT、APP、SERVER，SERVER分为CPU和GPU，GPU包根据您的环境选择一种安装
+安装服务WHL包，共有3种CLIENT、APP、SERVER，<mark>**SERVER分为CPU和GPU**</mark>，GPU包根据您的环境选择一种安装
 - post112 = CUDA11.2 + cuDNN8 + TensorRT8（推荐）
 - post101 = CUDA10.1 + cuDNN7 + TensorRT6
 - post102 = CUDA10.2 + cuDNN7 + TensorRT6 (与Paddle 镜像一致)
@@ -139,7 +146,7 @@ pip3 install -r python/requirements.txt
 <a name="2.1"></a>
 
 ### 2.1 在线安装
-在线安装采用 `pypi` 下载并安装的方式。
+在线安装采用`PYPI`下载并安装的方式。
 
 ```shell
 pip3 install paddle-serving-client==0.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -154,14 +161,14 @@ pip3 install paddle-serving-server-gpu==0.9.0.post112 -i https://pypi.tuna.tsing
 
 默认开启国内清华镜像源来加速下载，如果您使用HTTP代理可以关闭(`-i https://pypi.tuna.tsinghua.edu.cn/simple`)
 
-如果需要使用develop分支编译的安装包，请从[下载Wheel包](./Latest_Packages_CN.md)中获取下载地址进行下载，使用`pip install`命令进行安装。如果您想自行编译，请参照[Paddle Serving编译文档](./Compile_CN.md)。
+如果需要使用DEVELOP分支编译的安装包，请从[下载WHEEL包](./Latest_Packages_CN.md)中获取下载地址进行下载，使用`PIP INSTALL`命令进行安装。如果您想自行编译，请参照[PADDLE SERVING编译文档](./Compile_CN.md)。
 
-`paddle-serving-server` 和 `paddle-serving-server-gpu` 安装包支持Centos 6/7, Ubuntu 16/18和Windows 10。
+`paddle-serving-server`和`paddle-serving-server-gpu`安装包支持CENTOS6/7，UBUNTU16/18和WINDOWS10。
 
-`paddle-serving-client` 和 `paddle-serving-app` 安装包支持 Linux 和 Windows，其中 `paddle-serving-client` 仅支持 python3.6/3.7/3.8/3.9。
-
+`paddle-serving-client`和`paddle-serving-app`安装包支持LINUX和WINDOWS，其中`paddle-serving-client`仅支持PYTHON3.6/3.7/3.8/3.9。
 
 **当您使用`paddle_serving_client.convert`命令或者`Python Pipeline框架`时才需要安装。**
+
 ```
 # CPU环境请执行
 pip3 install paddlepaddle==2.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -169,7 +176,7 @@ pip3 install paddlepaddle==2.3.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 # GPU CUDA 11.2环境请执行
 pip3 install paddlepaddle-gpu==2.3.0.post112 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
-**注意**： 其他版本请参考[Paddle-Inference官方文档-下载安装Linux预测库](https://paddleinference.paddlepaddle.org.cn/master/user_guides/download_lib.html#python) 选择相应的GPU环境的 URL 链接并进行安装。
+**注意**：其他版本请参考[PADDLE-INFERENCE官方文档-下载安装LINUX预测库](https://paddleinference.paddlepaddle.org.cn/master/user_guides/download_lib.html#python)选择相应的GPU环境的URL链接并进行安装。
 
 ```
 # CUDA11.2 + CUDNN8 + TensorRT8 + Python(3.6-3.9)
@@ -195,11 +202,11 @@ pip3 install https://paddle-inference-lib.bj.bcebos.com/2.3.0/python/Linux/GPU/x
 <a name="2.2"></a>
 
 ### 2.2 离线安装
-离线安装是指所有的 Paddle 和 Serving 包和依赖库，传入到无网或弱网环境下安装。
+离线安装是指所有的PADDLE和SERVING包和依赖库，传入到无网或弱网环境下安装。
 
-**1.安装离线 Wheel 包**
+**1. 安装离线WHEEL包**
 
-Serving 和 Paddle Wheel包的离线依赖包下载有4个链接。
+SERVING和PADDLE WHEEL包的离线依赖包下载有4个链接。
 
 ```
 wget https://paddle-serving.bj.bcebos.com/offline_wheels/0.9.0/py36_offline_whl_packages.tar
@@ -208,7 +215,7 @@ wget https://paddle-serving.bj.bcebos.com/offline_wheels/0.9.0/py38_offline_whl_
 wget https://paddle-serving.bj.bcebos.com/offline_wheels/0.9.0/py39_offline_whl_packages.tar
 ```
 
-通过运行 `install.py` 脚本可本地安装 Serving 和 Paddle Wheel 包。`install.py` 脚本的参数列表如下：
+通过运行`INSTALL.PY`脚本可本地安装SERVING和PADDLE WHEEL包。`INSTALL.PY`脚本的参数列表如下：
 ```
 python3 install.py
   --python_version : Python version for installing wheels, one of [py36, py37, py38, py39], py37 default.
@@ -218,7 +225,7 @@ python3 install.py
   --paddle_version Verson of Paddle, one of [2.3.0, no_install], 2.3.0 default.
 ```
 
-**2.在环境变量中指定 `SERVING_BIN` 路径**
+**2. 在环境变量中指定 `SERVING_BIN` 路径**
 
 完成第1步安装后，若仅使用 python pipeline 模式可忽略此步骤。
 

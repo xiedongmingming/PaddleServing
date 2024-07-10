@@ -1,10 +1,10 @@
-# HTTP方式访问Server
+# HTTP方式访问SERVER
 
-Paddle Serving服务端目前提供了支持Http直接访问的功能，本文档显示了详细信息。
+PADDLESERVING服务端目前提供了支持HTTP直接访问的功能，本文档显示了详细信息。
 
 ## 基本原理
 
-BRPC-Server端支持通过Http的方式被访问，各种语言都有实现Http请求的一些库，所以Java/Python/Go等BRPC支持不太完善的语言，可以通过Http的方式直接访问服务端进行预测。
+BRPC-SERVER端支持通过HTTP的方式被访问，各种语言都有实现HTTP请求的一些库，所以JAVA/PYTHON/GO等BRPC支持不太完善的语言，可以通过HTTP的方式直接访问服务端进行预测。
 
 ### Http方式
 基本流程和原理：客户端需要将数据按照Proto约定的格式(请参阅[`core/general-server/proto/general_model_service.proto`](../../core/general-server/proto/general_model_service.proto))封装在Http请求的请求体中。

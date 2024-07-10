@@ -1,11 +1,11 @@
-# 保存用于 Serving 部署的模型参数
+# 保存用于SERVING部署的模型参数
 
 - [背景介绍](#1)
 - [功能设计](#2)
 - [功能使用](#3)
   - [PYTHON 命令执行](#3.1)
   - [代码引入执行](#3.2)
-- [Serving 部署](#4)
+- [SERVING部署](#4)
   - [服务端部署示例](#4.1)
   - [客户端部署示例](#4.2)
 
@@ -13,11 +13,11 @@
 
 ## 背景介绍
 
-模型参数信息保存在模型文件中，为什么还要保存用于 Paddle Serving 部署的模型参数呢，原因有3个：
+模型参数信息保存在模型文件中，为什么还要保存用于PADDLESERVING部署的模型参数呢，原因有3个：
 
 1. 服务化场景分为客户端和服务端，服务端加载模型，而在客户端没有模型信息，但需要在客户端需实现数据拼装和类型转换。
-2. 模型升级过程中 `feed vars` 和 `fetch vars` 的名称变化会导致代码升级，通过增加一个 `alias_name` 字段映射名称，代码无需升级。
-3. 部署 `Web` 服务，并使用 `URL` 方式访问时，请求信息中缺少类型和维度信息，在服务端推理前需要进行转换。
+2. 模型升级过程中`FEED VARS`和`FETCH VARS`的名称变化会导致代码升级，通过增加一个`ALIAS_NAME`字段映射名称，代码无需升级。
+3. 部署`WEB`服务，并使用`URL`方式访问时，请求信息中缺少类型和维度信息，在服务端推理前需要进行转换。
 
 <a name="2"></a>
 
@@ -25,15 +25,15 @@
 
 飞桨训推一体框架中，从动态图模型训练到静态图推理部署，一体化流程如下所示
 ```
-①动态图训练 → ②模型动转静 → ③静态模型 → ④模型保存 → ⑤Serving 部署
+①动态图训练 → ②模型动转静 → ③静态模型 → ④模型保存 → ⑤SERVING部署
 ```
 在飞桨框架2.1对模型与参数的保存与载入相关接口进行了梳理，完整文档参考[模型保存与载入](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/02_paddle2.0_develop/08_model_save_load_cn.html)
-- 对于训练调优场景，我们推荐使用 `paddle.save/load` 保存和载入模型；
-- 对于推理部署场景，我们推荐使用 `paddle.jit.save/load`（动态图）和 `paddle.static.save/load_inference_model` （静态图）保存载入模型；
+- 对于训练调优场景，我们推荐使用`PADDLE.SAVE/LOAD`保存和载入模型；
+- 对于推理部署场景，我们推荐使用`PADDLE.JIT.SAVE/LOAD`（动态图）和`PADDLE.STATIC.SAVE/LOAD_INFERENCE_MODEL`（静态图）保存载入模型；
 
-Paddle Serving 模型参数保存接口定位是在 `②模型动转静` 导出 `③静态模型`后，使用 `paddle.static.load_inference_model` 接口加载模型，和 `paddle.static.save_vars` 接口保存模型参数。
+PADDLESERVING模型参数保存接口定位是在`②模型动转静`导出`③静态模型`后，使用`PADDLE.STATIC.LOAD_INFERENCE_MODEL`接口加载模型，和`PADDLE.STATIC.SAVE_VARS`接口保存模型参数。
 
-生成的模型参数信息保存在 `paddle_serving_server/client.prototxt` 文件中，其格式如下
+生成的模型参数信息保存在`PADDLE_SERVING_SERVER/CLIENT.PROTOTXT`文件中，其格式如下
 ```
 feed_var {
   name: "x"
@@ -58,13 +58,13 @@ fetch_var {
 | 参数 |   描述 |
 |------|---------|
 | name | 实际变量名  |
-| alias_name | 变量别名，与 name 的关联业务场景中变量名 |
-| is_lod_tensor | 是否为 LOD Tensor |
-| feed_type | feed 变量类型|
-| fetch_type | fetch 变量类型|
-| shape 数组 | 变量的 Shape 信息 |
+| alias_name | 变量别名，与NAME的关联业务场景中变量名 |
+| is_lod_tensor | 是否为LOD TENSOR |
+| feed_type | FEED变量类型 |
+| fetch_type | FETCH变量类型 |
+| shape数组 | 变量的SHAPE信息 |
 
-feed 与 fetch 变量的类型列表如下:
+FEED与FETCH变量的类型列表如下:
 | 类型 | 类型值 |
 |------|------|
 | int64 | 0   |
@@ -84,12 +84,12 @@ feed 与 fetch 变量的类型列表如下:
 
 ## 功能使用
 
-Paddle 推理模型有3种形式，每种形式的读模型的方式都不同，散列方式必须以路径方式加载，其余2种采用目录或文件方式均可。
-1) Paddle 2.0前版本：`__model__`, `__params__`
-2) Paddle 2.0后版本：`*.pdmodel`, `*.pdiparams`
-3) 散列：`__model__`, `conv2d_1.w_0`, `conv2d_2.w_0`, `fc_1.w_0`, `conv2d_1.b_0`, ... 
+PADDLE推理模型有3种形式，每种形式的读模型的方式都不同，散列方式必须以路径方式加载，其余2种采用目录或文件方式均可。
+1) PADDLE2.0前版本：`__model__`，`__params__`
+2) PADDLE2.0后版本：`*.pdmodel`，`*.pdiparams`
+3) 散列：`__model__`，`conv2d_1.w_0`，`conv2d_2.w_0`，`fc_1.w_0`，`conv2d_1.b_0`，...
 
-`paddle_serving_client.convert` 接口既支持 PYTHON 命令方式执行，又支持 代码中引入运行。
+`PADDLE_SERVING_CLIENT.CONVERT`接口既支持PYTHON命令方式执行，又支持代码中引入运行。
 
 
 | 参数 | 类型 | 默认值 | 描述 |
@@ -102,60 +102,72 @@ Paddle 推理模型有3种形式，每种形式的读模型的方式都不同，
 
 <a name="3.1"></a>
 
-**一.PYTHON 命令执行**
+**一. PYTHON命令执行**
 
-首先需要安装 `paddle_serivng_client` 包，以目录方式加载模型。
+首先需要安装`PADDLE_SERVING_CLIENT`包，以目录方式加载模型。
 
 示例一，是以模型路径方式加载模型，适用于全部3种类型。
 ```python
 python3 -m paddle_serving_client.convert --dirname ./your_inference_model_dir
 ```
 
-示例二，以指定加载 `当前路径` 下模型 `dygraph_model.pdmodel` 和 `dygraph_model.pdiparams`，保存结果在 `serving_server` 和 `serving_client` 目录。
+示例二，以指定加载`当前路径`下模型`DYGRAPH_MODEL.PDMODEL`和`DYGRAPH_MODEL.PDIPARAMS`，保存结果在`SERVING_SERVER`和`SERVING_CLIENT`目录。
 ```python
-python3 -m paddle_serving_client.convert --dirname . --model_filename dygraph_model.pdmodel --params_filename dygraph_model.pdiparams --serving_server serving_server --serving_client serving_client
+python3 -m paddle_serving_client.convert --dirname . 
+	--model_filename dygraph_model.pdmodel 
+    --params_filename dygraph_model.pdiparams 
+    --serving_server serving_server 
+    --serving_client serving_client
 ```
 
 <a name="3.2"></a>
 
-**二.代码引入执行**
+**二.  代码引入执行**
 
-代码引入执行方式，通过 `import io` 包并调用 `inference_model_to_serving` 实现模型参数保存。
+代码引入执行方式，通过`IMPORT IO`包并调用`INFERENCE_MODEL_TO_SERVING`实现模型参数保存。
 ```python
 import paddle_serving_client.io as serving_io
-serving_io.inference_model_to_serving(dirname, serving_server="serving_server", serving_client="serving_client",  model_filename=None, params_filename=None)
+
+serving_io.inference_model_to_serving(
+    dirname, 
+    serving_server="serving_server", 
+    serving_client="serving_client",  
+    model_filename=None, 
+    params_filename=None
+)
 ```
 
 <a name="4"></a>
 
-## Serving 部署
+## SERVING部署
 生成完的模型可直接用于服务化推理，服务端使用和客户端使用。
 
 <a name="4.1"></a>
 
-**一.服务端部署示例**
+**一. 服务端部署示例**
 
-示例一：C++ Serving 启动服务
+示例一：C++ SERVING启动服务
 ```
 python3 -m paddle_serving_server.serve --model serving_server --port 9393 --gpu_id 0
 ```
 
-示例二：Python Pipeline 启动服务，在 `config.yml` 中指定模型路径
+示例二：PYTHON PIPELINE启动服务，在`CONFIG.YML`中指定模型路径
 ```
 op:
     det:
-        #并发数，is_thread_op=True时，为线程并发；否则为进程并发
+        # 并发数，IS_THREAD_OP=TRUE时，为线程并发；否则为进程并发
         concurrency: 6
 
-        #当op配置没有server_endpoints时，从local_service_conf读取本地服务配置
+        # 当OP配置没有SERVER_ENDPOINTS时，从LOCAL_SERVICE_CONF读取本地服务配置
         local_service_conf:
-            #client类型，包括brpc, grpc和local_predictor.local_predictor不启动Serving服务，进程内预测
+        
+            # CLIENT类型，包括BRPC，GRPC和LOCAL_PREDICTOR.LOCAL_PREDICTOR不启动SERVING服务，进程内预测
             client_type: local_predictor
 
-            #det模型路径
+            # DET模型路径
             model_config: ocr_det_model
 
-            #Fetch结果列表，以client_config中fetch_var的alias_name为准
+            # FETCH结果列表，以CLIENT_CONFIG中FETCH_VAR的ALIAS_NAME为准
             fetch_list: ["save_infer_model/scale_0.tmp_1"]
 
             # device_type, 0=cpu, 1=gpu, 2=tensorRT, 3=arm cpu, 4=kunlun xpu
@@ -164,25 +176,33 @@ op:
 
 <a name="4.2"></a>
 
-**二.客户端部署示例**
+**二. 客户端部署示例**
 
-通过 `client` 对象的 `load_client_config` 接口加载模型配置信息
+通过`CLIENT`对象的`LOAD_CLIENT_CONFIG`接口加载模型配置信息
 ```
 from paddle_serving_client import Client
+
 from paddle_serving_app.reader import Sequential, File2Image, Resize, CenterCrop
 from paddle_serving_app.reader import RGB2BGR, Transpose, Div, Normalize
 
 client = Client()
-client.load_client_config(
-    "serving_client/serving_client_conf.prototxt")
+
+client.load_client_config("serving_client/serving_client_conf.prototxt")
 client.connect(["127.0.0.1:9393"])
 
 seq = Sequential([
-    File2Image(), Resize(256), CenterCrop(224), RGB2BGR(), Transpose((2, 0, 1)),
-    Div(255), Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], True)
+    File2Image(), 
+    Resize(256), 
+    CenterCrop(224), 
+    RGB2BGR(), 
+    Transpose((2, 0, 1)),
+    Div(255), 
+    Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225], True)
 ])
 
 image_file = "daisy.jpg"
+
 img = seq(image_file)
+
 fetch_map = client.predict(feed={"inputs": img}, fetch=["save_infer_model/scale_0.tmp_0"])
 ```

@@ -1,8 +1,8 @@
-# Paddle Serving Client Java SDK
+# PADDLE SERVING CLIENT JAVA SDK
 
-(简体中文|[English](Java_SDK_EN.md))
+(简体中文|[ENGLISH](Java_SDK_EN.md))
 
-Paddle Serving 提供了 Java SDK，支持 Client 端用 Java 语言进行预测，本文档说明了如何使用 Java SDK。
+PADDLESERVING提供了JAVA SDK，支持CLIENT端用JAVA语言进行预测，本文档说明了如何使用JAVA SDK。
 
 ## 快速开始
 
@@ -13,23 +13,23 @@ Paddle Serving 提供了 Java SDK，支持 Client 端用 Java 语言进行预测
 - Apache Maven
 ```
 
-下表显示了 Paddle Serving Server 和 Java SDK 之间的兼容性
+下表显示了PADDLE SERVING SERVER和JAVA SDK之间的兼容性
 
 | Paddle Serving Server version | Java SDK version |
 | :---------------------------: | :--------------: |
 |             0.9.0             |      0.0.1       |
 
-1.    直接使用提供的Java SDK作为Client进行预测
+1.    直接使用提供的JAVA SDK作为CLIENT进行预测
 ### 安装
 
-您可以直接下载 jar，安装到本地 Maven 库：
+您可以直接下载JAR，安装到本地MAVEN库：
 
 ```shell
 wget https://paddle-serving.bj.bcebos.com/jar/paddle-serving-sdk-java-0.0.1.jar
 mvn install:install-file -Dfile=$PWD/paddle-serving-sdk-java-0.0.1.jar -DgroupId=io.paddle.serving.client -DartifactId=paddle-serving-sdk-java -Dversion=0.0.1 -Dpackaging=jar
 ```
 
-### Maven 配置
+### MAVEN配置
 
 ```text
  <dependency>

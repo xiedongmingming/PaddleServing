@@ -1,12 +1,12 @@
-## Paddle Serving 数据处理
+## PADDLESERVING数据处理
 
 ### 综述
 
-Paddle Serving提供了非常灵活的pipeline web/rpc服务，因此需要一个统一的教程来指导在数据流的各个阶段，我们的自然数据（文字/图片/稀疏参数表）会以何种形式存在并且传递。本文将以pipeline web service为例。
+PADDLESERVING提供了非常灵活的PIPELINE WEB/RPC服务，因此需要一个统一的教程来指导在数据流的各个阶段，我们的自然数据（文字/图片/稀疏参数表）会以何种形式存在并且传递。本文将以PIPELINE WEB SERVICE为例。
 
-### pipeline客户端
+### PIPELINE客户端
 
-pipeline客户端只做很简单的处理，他们把自然输入转化成可以序列化的JSON字典或者是对应的protubuf bytes字段即可。
+PIPELINE客户端只做很简单的处理，他们把自然输入转化成可以序列化的JSON字典或者是对应的PROTOBUF BYTES字段即可。
 
 #### 1）字符串/数字
 

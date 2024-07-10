@@ -12,7 +12,7 @@
   - [1.9 视频理解](#1.9)
 - [模型示例库](#2)
 
-Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例。
+PADDLESERVING已实现9个类别，共计46个模型的服务化部署示例。
 
 <a name="1"></a>
 
@@ -20,7 +20,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 
 <a name="1.1"></a>
 
-**一.图像分类与识别**
+**一. 图像分类与识别**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -44,7 +44,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 
 <a name="1.2"></a>
 
-**二.文本类**
+**二. 文本类**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -59,7 +59,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.3"></a>
 
-**三.推荐系统**
+**三. 推荐系统**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -71,7 +71,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.4"></a>
 
-**四.人脸识别**
+**四. 人脸识别**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -81,7 +81,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.5"></a>
 
-**五.目标检测**
+**五. 目标检测**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -100,7 +100,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.6"></a>
 
-**六.文字识别**
+**六. 文字识别**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -117,7 +117,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.7"></a>
 
-**七.图像分割**
+**七. 图像分割**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -128,7 +128,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.8"></a>
 
-**八.关键点检测**
+**八. 关键点检测**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -138,7 +138,7 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 ---
 <a name="1.9"></a>
 
-**九.视频理解**
+**九. 视频理解**
 
 模型部署示例请参阅下表：
 | 场景| 模型 | 类型 | 示例使用的框架 | 下载 |
@@ -150,9 +150,9 @@ Paddle Serving 已实现9个类别，共计46个模型的服务化部署示例�
 
 ## 模型示例库
 
-Paddle Serving 代码库下模型部署示例请参考 [examples](../examples) 目录。更多 Paddle Serving 部署模型请参考 [wholechain](https://www.paddlepaddle.org.cn/wholechain)。
+PADDLESERVING代码库下模型部署示例请参考[EXAMPLES](../examples)目录。更多PADDLESERVING部署模型请参考[WHOLECHAIN](https://www.paddlepaddle.org.cn/wholechain)。
 
-了解最新模型，请进入 Paddle 模型套件库：
+了解最新模型，请进入PADDLE模型套件库：
   - [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)
   - [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) 
   - [PaddleClas](https://github.com/PaddlePaddle/PaddleClas)

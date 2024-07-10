@@ -1,18 +1,18 @@
-# Serving配置
+# SERVING配置
 
-(简体中文|[English](./Serving_Configure_EN.md))
+(简体中文|[ENGLISH](./Serving_Configure_EN.md))
 
 ## 简介
 
-本文主要介绍C++ Serving以及Python Pipeline的各项配置:
+本文主要介绍C++ SERVING以及PYTHON PIPELINE的各项配置：
 
-- [模型配置文件](#模型配置文件): 转换模型时自动生成，描述模型输入输出信息
-- [C++ Serving](#c-serving): 用于高性能场景，介绍了快速启动以及自定义配置方法
-- [Python Pipeline](#python-pipeline): 用于单算子多模型组合场景
+- [模型配置文件](#模型配置文件)：转换模型时自动生成，描述模型输入输出信息
+- [C++ SERVING](#c-serving)：用于高性能场景，介绍了快速启动以及自定义配置方法
+- [PYTHON PIPELINE](#python-pipeline)：用于单算子多模型组合场景
 
 ## 模型配置文件
 
-在开始介绍Server配置之前，先来介绍一下模型配置文件。我们在将模型转换为PaddleServing模型时，会生成对应的serving_client_conf.prototxt以及serving_server_conf.prototxt，两者内容一致，为模型输入输出的参数信息，方便用户拼装参数。该配置文件用于Server以及Client，并不需要用户自行修改。转换方法参考文档《[怎样保存用于Paddle Serving的模型](./Save_CN.md)》。protobuf格式可参考`core/configure/proto/general_model_config.proto`。
+在开始介绍SERVER配置之前，先来介绍一下模型配置文件。我们在将模型转换为PADDLESERVING模型时，会生成对应的SERVING_CLIENT_CONF.PROTOTXT以及SERVING_SERVER_CONF.PROTOTXT，两者内容一致，为模型输入输出的参数信息，方便用户拼装参数。该配置文件用于SERVER以及CLIENT，并不需要用户自行修改。转换方法参考文档《[怎样保存用于PADDLESERVING的模型](./Save_CN.md)》。PROTOBUF格式可参考`CORE/CONFIGURE/PROTO/GENERAL_MODEL_CONFIG.PROTO`。
 
 样例如下：
 
@@ -40,7 +40,7 @@ fetch_var {
 - fetch_var：模型输出
 - name：名称
 - alias_name：别名，与名称对应
-- is_lod_tensor：是否为lod，具体可参考《[Lod字段说明](./LOD_CN.md)》
+- is_lod_tensor：是否为LOD，具体可参考《[LOD字段说明](./LOD_CN.md)》
 - feed_type：数据类型
 
 |feed_type|类型|
@@ -58,9 +58,9 @@ fetch_var {
 
 - shape：数据维度
 
-## C++ Serving
+## C++ SERVING
 
-### 1.快速启动与关闭
+### 1. 快速启动与关闭
 
 可以通过配置模型及端口号快速启动服务，启动命令如下：
 
@@ -68,7 +68,7 @@ fetch_var {
 python3 -m paddle_serving_server.serve --model serving_model --port 9393
 ```
 
-该命令会自动生成配置文件，并使用生成的配置文件启动C++ Serving。例如上述启动命令会自动生成workdir_9393目录，其结构如下
+该命令会自动生成配置文件，并使用生成的配置文件启动C++ SERVING。例如上述启动命令会自动生成WORKDIR_9393目录，其结构如下
 
 ```
 workdir_9393
@@ -116,40 +116,42 @@ workdir_9393
 | `--trt_workspace_size`                           | int  | 33554432| Initialize allocation 1 << 25 GPU storage size for tensorRT|
 | `--trt_use_static`                               | bool | False   | Initialize TRT with static data| 
 
-#### 当您的某个模型想使用多张GPU卡部署时.
+#### 当您的某个模型想使用多张GPU卡部署时：
 ```BASH
 python3 -m paddle_serving_server.serve --model serving_model --thread 10 --port 9292 --gpu_ids 0,1,2
 ```
-#### 当您的一个服务包含两个模型部署时.
+#### 当您的一个服务包含两个模型部署时：
 ```BASH
 python3 -m paddle_serving_server.serve --model serving_model_1 serving_model_2 --thread 10 --port 9292
 ```
-#### 当您想要关闭Serving服务时（在Serving启动目录或环境变量SERVING_HOME路径下，执行以下命令）.
+#### 当您想要关闭SERVING服务时（在SERVING启动目录或环境变量SERVING_HOME路径下执行以下命令）：
 ```BASH
 python3 -m paddle_serving_server.serve stop
 ```
-stop参数发送SIGINT至C++ Serving，若改成kill则发送SIGKILL信号至C++ Serving
+STOP参数发送SIGINT至C++ SERVING，若改成KILL则发送SIGKILL信号至C++ SERVING
 
-### 2.自定义配置启动
+### 2. 自定义配置启动
 
-一般情况下，自动生成的配置可以应对大部分场景。对于特殊场景，用户也可自行定义配置文件。这些配置文件包括service.prototxt、workflow.prototxt、resource.prototxt、model_toolkit.prototxt、proj.conf。启动命令如下:
+一般情况下，自动生成的配置可以应对大部分场景。对于特殊场景，用户也可自行定义配置文件。这些配置文件包括SERVICE.PROTOTXT、WORKFLOW.PROTOTXT、RESOURCE.PROTOTXT、MODEL_TOOLKIT.PROTOTXT、PROJ.CONF。启动命令如下：
 ```BASH
 /bin/serving --flagfile=proj.conf
 ```
 
 #### 2.1 proj.conf
 
-proj.conf用于传入服务参数，并指定了其他相关配置文件的路径。如果重复传入参数，则以最后序参数值为准。
+PROJ.CONF用于传入服务参数，并指定了其他相关配置文件的路径。如果重复传入参数，则以最后序参数值为准。
 ```
 # for paddle inference
 --precision=fp32
 --use_calib=False
 --reload_interval_s=10
+
 # for brpc
 --max_concurrency=0
 --num_threads=10
 --bthread_concurrency=10
 --max_body_size=536870912
+
 # default path
 --inferservice_path=conf
 --inferservice_file=infer_service.prototxt

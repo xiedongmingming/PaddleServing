@@ -18,6 +18,12 @@ cd Serving/java
 
 SERVING文件夹是镜像生成时的DEVELOP分支工程目录，需要GIT PULL到最新版本，或者GIT CHECKOUT到想要的分支。
 
+```
+git checkout -b v0.9.0 origin/v0.9.0
+```
+
+
+
 ## 安装客户端依赖
 
 由于依赖库数量庞大，因此镜像已经在生成时编译过一次，用户执行以下操作即可
